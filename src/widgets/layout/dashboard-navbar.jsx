@@ -1,37 +1,30 @@
-import { useLocation, Link } from "react-router-dom";
-import {
-  Navbar,
-  Typography,
-  Button,
-  IconButton,
-  Breadcrumbs,
-  Input,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-  Avatar,
-} from "@material-tailwind/react";
-import {
-  UserCircleIcon,
-  Cog6ToothIcon,
-  BellIcon,
-  ClockIcon,
-  CreditCardIcon,
-  Bars3Icon,
-} from "@heroicons/react/24/solid";
-import {
-  useMaterialTailwindController,
-  setOpenConfigurator,
-  setOpenSidenav,
-} from "@/context";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Navbar, Typography,Button,IconButton,Breadcrumbs} from "@material-tailwind/react";
+
+import {Cog6ToothIcon} from "@heroicons/react/24/solid";
+import {  useMaterialTailwindController,  setOpenConfigurator,setOpenSidenav} from "@/context";
+import { useState } from "react";
 
 export function DashboardNavbar() {
+  const navigate = useNavigate()
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+
+
+  const HandleLogout =()=>{
+ 
+      sessionStorage.removeItem("token");
+     navigate("/")
+    
+  }
   return (
     <Navbar
       color={fixedNavbar ? "white" : "transparent"}
@@ -59,23 +52,41 @@ export function DashboardNavbar() {
         </div>
         <div className="flex items-center">
           
-          <IconButton
-            variant="text"
-            color="blue-gray"
-            className="grid xl:hidden"
-            onClick={() => setOpenSidenav(dispatch, !openSidenav)}
-          >
-            <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
-          </IconButton>
-          
-          
-          <IconButton
+        <IconButton
             variant="text"
             color="blue-gray"
             onClick={() => setOpenConfigurator(dispatch, true)}
           >
             <Cog6ToothIcon className="h-5 w-5 text-blue-gray-500" />
           </IconButton>
+
+          <IconButton
+            variant="text"
+            color="blue-gray"
+            onClick={toggleDropdown}
+          >
+            <Cog6ToothIcon className="h-5 w-5 text-blue-gray-500" />
+          </IconButton>
+          {isDropdownOpen && (
+        <div className="absolute right-6 mt-20   origin-top-right  divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <div className="py-1">
+            <Button
+              color="blue-gray"
+              buttonType="link"
+              ripple="dark"
+              onClick={HandleLogout}
+              className="text-left w-full  px-4 py-2 text-sm text-gray-900"
+            >
+              Logout
+            </Button>
+          </div>
+        </div>
+      )}
+    
+          
+          
+          
+         
         </div>
       </div>
     </Navbar>

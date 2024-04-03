@@ -1,18 +1,15 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react'
+
 import headphone from '../../assests/headphone.jpeg'
-import {
-  Navbar,
-  MobileNav,
-  Typography,
-  Button,
-  IconButton,
-  Card,
-} from "@material-tailwind/react"
+import {Navbar,Collapse,Typography,Button,IconButton} from "@material-tailwind/react"
 import { Link } from 'react-router-dom';
+
+import 'reactjs-popup/dist/index.css';
+import { Signup } from './Signup';
+import { Login } from './Login';
 function Navbars() {
-    const [openNav, setOpenNav] = React.useState(false);
- 
-    React.useEffect(() => {
+    const [openNav, setOpenNav] = useState(false);
+    useEffect(() => {
       window.addEventListener(
         "resize",
         () => window.innerWidth >= 960 && setOpenNav(false),
@@ -29,20 +26,11 @@ function Navbars() {
           <div className="flex items-center gap-4">
             
             <div className="flex items-center gap-x-6">
-              <Button
-                variant="text"
-                size="sm"
-                className="hidden lg:inline-block"
-              >
-                <span><Link to="/dashboard/home">Log In</Link></span>
-              </Button>
-              <Button
-                variant="gradient"
-                size="sm"
-                className="hidden lg:inline-block"
-              >
-                <span>Sign up</span>
-              </Button>
+    <Login/>
+
+
+
+         <Signup/>
             </div>
             <IconButton
               variant="text"
@@ -83,17 +71,16 @@ function Navbars() {
             </IconButton>
           </div>
         </div>
-        <MobileNav open={openNav}>
-         
-          <div className="flex items-center gap-x-1">
-            <Button fullWidth variant="text" size="sm" className="">
-              <span><Link to="/dashboard/home">Log In</Link></span>
-            </Button>
-            <Button fullWidth variant="gradient" size="sm" className="">
-              <span>Sign up</span>
-            </Button>
-          </div>
-        </MobileNav>
+        <Collapse open={openNav}>
+  <div className="flex items-center gap-x-1">
+    <Button fullWidth variant="text" size="sm" className="">
+      <span><Link to="/dashboard/home">Log In</Link></span>
+    </Button>
+    <Button fullWidth variant="gradient" size="sm" className="">
+      <span>Sign up</span>
+    </Button>
+  </div>
+</Collapse>
       </Navbar>
 
 
@@ -101,7 +88,7 @@ function Navbars() {
       <img
       className="h-[450px] w-full rounded"
       src="https://wallpaperset.com/w/full/c/1/2/466994.jpg"
-      alt="nature image"
+      alt="Hero Section "
     />
       
      
