@@ -31,7 +31,7 @@ export function AddUser() {
       navigate('/dashboard/home')
     } catch (error) {
       console.error('Error adding user:', error);
-      // Optionally, you can display an error message to the user
+     
     }
   };
 

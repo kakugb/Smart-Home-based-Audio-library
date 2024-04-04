@@ -36,12 +36,14 @@ export const routes = [
         name: "Audio Library",
         path: "/AudioLibrary",
         element: <AudioLibrary />,
+        role:1,
       },
       {
         icon: <InformationCircleIcon {...icon} />,
         name: "Upload Audio",
         path: "/UploadAudio",        
         element: <UploadAudio />,
+       
       },
     ],
   },
