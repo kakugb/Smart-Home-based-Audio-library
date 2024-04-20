@@ -1,127 +1,109 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 
-function MusicCategory() {
+export default function MusicCategory() {
+  const [audios, setAudios] = useState([]);
+  const [displayedAudios, setDisplayedAudios] = useState([]);
+  const [selectedAudio, setSelectedAudio] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    async function fetchAudios() {
+      try {
+        const response = await axios.get('https://audio.globillmedicalresources.com/public/api/all/audios');
+        setAudios(response.data.audios);
+        setDisplayedAudios(response?.data.audios); 
+        setIsLoading(false); 
+      } catch (error) {
+        console.error('Error fetching audios:', error);
+        setIsLoading(false); 
+      }
+    }
+
+    fetchAudios();
+  }, []);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play(); 
+      } else {
+        audioRef.current.pause(); 
+      }
+    }
+  }, [isPlaying]);
+
+  const playAudio = (audio) => {
+   
+    setSelectedAudio(audio);
+    setIsPlaying(true);
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+    }
+  };
+  
+  const stopAudio = () => {
+    
+    setIsPlaying(false);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  };
+
+
+
   return (
-    <div>
-        <h1 className='w-full h-16 text-3xl font-extrabold mt-3 text-center pt-5 '>Music Categories</h1>
-    
-    <section class="grid grid-cols-1 ml-8 sm:grid-cols-2  md:grid-cols-5 gap-4 my-6 px-12">
+    <main className="place-items-center min-h-screen p-5">
      
-      
-    <div class="w-[80%]  bg-gray-300 shadow-lg rounded-3xl p-5">
-        <div class="group relative mx-auto">
-          <img class="w-full md:w-72 block rounded mx-auto" src="https://w0.peakpx.com/wallpaper/97/713/HD-wallpaper-arjith-singh-bollywood-singer-thumbnail.jpg" alt="" />
-          <div class="absolute bg-black rounded bg-opacity-0 group-hover:bg-opacity-60 w-full h-full top-0 flex items-center group-hover:opacity-100 transition justify-evenly">
-           
 
-            <button class="hover:scale-110 text-white opacity-0 transform translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play-circle-fill" viewBox="0 0 16 16">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z" />
-              </svg>
-            </button>
-
-        
-          </div>
+      {isLoading ? ( 
+        <div>Loading...</div>
+      ) : (
+        <div>
+          {displayedAudios.length === 0 ? (
+            <div>No audio found.</div>
+          ) : (
+            <>
+            
+            <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          
+              {displayedAudios.map(audio => (
+                <div key={audio.id} className="bg-gray-900 shadow-lg rounded-3xl p-3">
+                  <div className="group relative mx-auto">
+                    <img className="w-full md:w-72 max-h-52 block rounded mx-auto" src={`http://127.0.0.1:8000/public/images/${audio.image}`} alt={audio.name} />
+                    <div className="absolute bg-black rounded bg-opacity-0 group-hover:bg-opacity-60 w-full h-full top-0 flex items-center group-hover:opacity-100 transition justify-evenly">
+                      {selectedAudio === audio && isPlaying ? (
+                        <button className="hover:scale-110 text-white opacity-0 transform translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 transition" onClick={stopAudio}>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-stop-circle-fill" viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm2.5 10.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 1 0v5zm-5 0a.5.5 0 0 1-1 0V5a.5.5 0 0 1 1 0v5z" />
+                          </svg>
+                        </button>
+                      ) : (
+                        <button className="hover:scale-110 text-white opacity-0 transform translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 transition" onClick={() => playAudio(audio)}>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-play-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-white text-lg">{audio.name}</h3>
+                    <p className="text-gray-400">{audio.description}</p>
+                  </div>
+                </div>
+              ))}
+            </section>
+            </>
+          )}
         </div>
-        <div class="p-5">
-          <h3 class="text-gray-600 text-lg">Epoch</h3>
-          <p class="text-gray-900">Tycho</p>
-        </div>
-      </div>
-    
-      <div class="w-[80%] bg-gray-300 shadow-lg rounded-3xl p-5">
-        <div class="group relative mx-auto">
-          <img class="w-full md:w-72 block rounded mx-auto" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ-34rHgVR0iVeBP8Gk0m81kwapf1JimxO_nUvf2fwy-G83YdImVFi7kYsA0KK3XZNtZA&usqp=CAU" alt="" />
-          <div class="absolute bg-black rounded bg-opacity-0 group-hover:bg-opacity-60 w-full h-full top-0 flex items-center group-hover:opacity-100 transition justify-evenly">
-           
-
-            <button class="hover:scale-110 text-white opacity-0 transform translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play-circle-fill" viewBox="0 0 16 16">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z" />
-              </svg>
-            </button>
-
-        
-          </div>
-        </div>
-        <div class="p-5">
-          <h3 class="text-gray-600 text-lg">Epoch</h3>
-          <p class="text-gray-900">Tycho</p>
-        </div>
-      </div>
-     
-      
-      <div class="w-[80%] bg-gray-300 shadow-lg rounded-3xl p-5">
-        <div class="group relative mx-auto">
-          <img class="w-full md:w-72 block rounded mx-auto" src="https://w0.peakpx.com/wallpaper/97/713/HD-wallpaper-arjith-singh-bollywood-singer-thumbnail.jpg" alt="" />
-          <div class="absolute bg-black rounded bg-opacity-0 group-hover:bg-opacity-60 w-full h-full top-0 flex items-center group-hover:opacity-100 transition justify-evenly">
-           
-
-            <button class="hover:scale-110 text-white opacity-0 transform translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play-circle-fill" viewBox="0 0 16 16">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z" />
-              </svg>
-            </button>
-
-        
-          </div>
-        </div>
-        <div class="p-5">
-          <h3 class="text-gray-600 text-lg">Epoch</h3>
-          <p class="text-gray-900">Tycho</p>
-        </div>
-      </div>
- 
-      <div class="w-[80%] bg-gray-300 shadow-lg rounded-3xl p-5">
-        <div class="group relative mx-auto">
-          <img class="w-full md:w-72 block rounded mx-auto" src="https://w0.peakpx.com/wallpaper/97/713/HD-wallpaper-arjith-singh-bollywood-singer-thumbnail.jpg" alt="" />
-          <div class="absolute bg-black rounded bg-opacity-0 group-hover:bg-opacity-60 w-full h-full top-0 flex items-center group-hover:opacity-100 transition justify-evenly">
-           
-
-            <button class="hover:scale-110 text-white opacity-0 transform translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play-circle-fill" viewBox="0 0 16 16">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z" />
-              </svg>
-            </button>
-
-        
-          </div>
-        </div>
-        <div class="p-5">
-          <h3 class="text-gray-600 text-lg">Epoch</h3>
-          <p class="text-gray-900">Tycho</p>
-        </div>
-      </div>
-
-
-
-      <div class="w-[80%] bg-gray-300 shadow-lg rounded-3xl p-5">
-        <div class="group relative mx-auto">
-          <img class="w-full md:w-72 block rounded mx-auto" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ-34rHgVR0iVeBP8Gk0m81kwapf1JimxO_nUvf2fwy-G83YdImVFi7kYsA0KK3XZNtZA&usqp=CAU" alt="" />
-          <div class="absolute bg-black rounded bg-opacity-0 group-hover:bg-opacity-60 w-full h-full top-0 flex items-center group-hover:opacity-100 transition justify-evenly">
-           
-
-            <button class="hover:scale-110 text-white opacity-0 transform translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play-circle-fill" viewBox="0 0 16 16">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z" />
-              </svg>
-            </button>
-
-        
-          </div>
-        </div>
-        <div class="p-5">
-          <h3 class="text-gray-600 text-lg">Epoch</h3>
-          <p class="text-gray-900">Tycho</p>
-        </div>
-      </div>
-
-
-
-      
-    </section>
-    </div>
-  )
+      )}
+      {selectedAudio && (
+        <audio ref={audioRef} src={`http://127.0.0.1:8000/public/audios/${selectedAudio.audio_file}`} onEnded={stopAudio} autoPlay={isPlaying} />
+      )}
+    </main>
+  );
 }
-
-export default MusicCategory

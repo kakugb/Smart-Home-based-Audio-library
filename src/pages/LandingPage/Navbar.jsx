@@ -25,13 +25,10 @@ function Navbars() {
             </div>
           <div className="flex items-center gap-4">
             
-            <div className="flex items-center gap-x-6">
+          <div class=" sm:flex items-center gap-x-6 hidden  ">
     <Login/>
-
-
-
-         <Signup/>
-            </div>
+    <Signup/>
+</div>
             <IconButton
               variant="text"
               className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
@@ -72,13 +69,9 @@ function Navbars() {
           </div>
         </div>
         <Collapse open={openNav}>
-  <div className="flex items-center gap-x-1">
-    <Button fullWidth variant="text" size="sm" className="">
-      <span><Link to="/dashboard/home">Log In</Link></span>
-    </Button>
-    <Button fullWidth variant="gradient" size="sm" className="">
-      <span>Sign up</span>
-    </Button>
+  <div className="flex items-center gap-x-1  ">
+    <Login/>
+    <Signup/>
   </div>
 </Collapse>
       </Navbar>

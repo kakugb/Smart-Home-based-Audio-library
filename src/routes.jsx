@@ -33,18 +33,19 @@ export const routes = [
       },
       {
         icon: <TableCellsIcon {...icon} />,
-        name: "Audio Library",
+        name: "Audio_Library",
         path: "/AudioLibrary",
         element: <AudioLibrary />,
-        role:1,
+        
       },
       {
         icon: <InformationCircleIcon {...icon} />,
-        name: "Upload Audio",
+        name: "Upload_Audio",
         path: "/UploadAudio",        
         element: <UploadAudio />,
-       
-      },
+        role:2,
+        
+      }, 
     ],
   },
  

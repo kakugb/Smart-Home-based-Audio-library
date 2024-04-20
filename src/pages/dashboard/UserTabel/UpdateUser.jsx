@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const UpdateUser = () => {
     const { id } = useParams();
@@ -10,7 +12,8 @@ export const UpdateUser = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/user/${id}`);
+                
+                const response = await axios.get(`https://audio.globillmedicalresources.com/public/api/user/${id}`);
                 
                 if (response.status === 200) {
                     const data = response.data.edit;
@@ -37,10 +40,15 @@ export const UpdateUser = () => {
 
     const handleUpdate = async () => {
         try {
-            const response = await axios.put(`http://127.0.0.1:8000/api/user/${id}`, userData);
+            const response = await axios.put(`https://audio.globillmedicalresources.com/public/api/user/${id}`, userData);
+            console.log(response)
             if (response.status === 200) {
-                console.log('User updated successfully');
-                navigate('/dashboard/home')
+                
+                toast("User update Successfully !");
+                setTimeout(() => {
+                    navigate('/dashboard/UserManagement')
+                }, 3000);
+               
 
             } else {
                 console.error('Failed to update user');
@@ -50,6 +58,7 @@ export const UpdateUser = () => {
         }
     };
     return (
+        <>
         <div className="w-full max-w-xs grid mx-auto mt-16">
             <h1 className='text-3xl font-bold mb-6 text-center'>Update User</h1>
             <form className="bg-gray-400 shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -90,6 +99,8 @@ export const UpdateUser = () => {
                 </div>
             </form>
         </div>
+             <ToastContainer />
+             </>
     );
 };
 

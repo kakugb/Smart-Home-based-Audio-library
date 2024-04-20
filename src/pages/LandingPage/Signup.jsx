@@ -4,8 +4,11 @@ import axios from 'axios';
 import { useMutation } from 'react-query';
 import {  Button} from "@material-tailwind/react"
 import Popup from 'reactjs-popup';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 export const Signup = () => {
- 
+ const navigate = useNavigate()
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -31,19 +34,22 @@ export const Signup = () => {
   const registerUser = async () => {
     
     if (password !== confirmPassword) {
-      alert("Passwords don't match");
+      
+      toast.error("Passwords don't match !");
       return;
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/register', {
+      const response = await axios.post('https://audio.globillmedicalresources.com/public/api/register', {
         name,
         email,
         password,
       });
       console.log('Registration successful:', response.data);
-     
-      alert('Registration successful!');
+      toast.success("Registration successful !");
+      setTimeout(() => {
+        navigate("/")
+      }, 2000);
       close();
     } catch (error) {
       console.error('Error registering:', error);
@@ -58,8 +64,8 @@ export const Signup = () => {
   };
   return (
     <Popup trigger={
-      <Button variant="text" size="sm" className="hidden lg:inline-block">
-      <span className='text-[15px]'>Sign up</span>
+      <Button fullWidth variant="gradient" size="sm" className=" " >
+      <span>Sigup</span>
     </Button>
     } modal nested>
       {(close) => (
@@ -115,15 +121,18 @@ export const Signup = () => {
                 />
               </div>
               <button
+              
                 className="select-none rounded-lg bg-gray-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                 type="submit"
                 disabled={mutation.isLoading}
+               
               >
                 {mutation.isLoading ? 'Loading...' : 'Sign Up'}
               </button>
               {mutation.isError && <div>Error signing up</div>}
             </form>
           </div>
+          <ToastContainer/>
         </div>
       )}
     </Popup>

@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Navbar, Typography,Button,IconButton,Breadcrumbs} from "@material-tailwind/react";
 
-import {Cog6ToothIcon} from "@heroicons/react/24/solid";
+import {Cog6ToothIcon,UserIcon,Bars3Icon} from "@heroicons/react/24/solid";
 import {  useMaterialTailwindController,  setOpenConfigurator,setOpenSidenav} from "@/context";
 import { useState } from "react";
 
@@ -36,7 +36,7 @@ export function DashboardNavbar() {
       fullWidth
       blurred={fixedNavbar}
     >
-      <div className="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center">
+      <div className="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center ">
         <div className="capitalize">
           <Breadcrumbs
             className={`bg-transparent p-0 transition-all ${
@@ -51,6 +51,9 @@ export function DashboardNavbar() {
           </Typography>
         </div>
         <div className="flex items-center">
+         
+          <div className="w-full flex justify-end">
+        
           
         <IconButton
             variant="text"
@@ -59,16 +62,24 @@ export function DashboardNavbar() {
           >
             <Cog6ToothIcon className="h-5 w-5 text-blue-gray-500" />
           </IconButton>
+          <IconButton
+            variant="text"
+            color="blue-gray"
+            className="grid xl:hidden"
+            onClick={() => setOpenSidenav(dispatch, !openSidenav)}
+          >
+            <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
+          </IconButton>
 
           <IconButton
             variant="text"
             color="blue-gray"
             onClick={toggleDropdown}
           >
-            <Cog6ToothIcon className="h-5 w-5 text-blue-gray-500" />
+            <UserIcon className="h-5 w-5 text-blue-gray-500" />
           </IconButton>
           {isDropdownOpen && (
-        <div className="absolute right-6 mt-20   origin-top-right  divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <div className="absolute right-6 mt-10   origin-top-right  divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
             <Button
               color="blue-gray"
@@ -82,6 +93,7 @@ export function DashboardNavbar() {
           </div>
         </div>
       )}
+      </div>
     
           
           

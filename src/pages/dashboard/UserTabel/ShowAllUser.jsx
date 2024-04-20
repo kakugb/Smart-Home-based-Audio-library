@@ -2,6 +2,8 @@ import React from 'react'
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const ShowAllUser = () => {
     const [users, setUsers] = useState([]);
     const [singleUser,setSingleUser]=useState('')
@@ -15,9 +17,9 @@ const ShowAllUser = () => {
   
    
     const FetchAllusers =()=>{
-      axios.get('http://127.0.0.1:8000/api/users')
+      axios.get('https://audio.globillmedicalresources.com/public/api/users')
       .then(response => {
-        console.log(response)
+        
         setUsers(response);
         setIsLoading(false);
       })
@@ -28,10 +30,11 @@ const ShowAllUser = () => {
     }
   
     const handleDeleteUser = (userId) => {
-      axios.delete(`http://127.0.0.1:8000/api/user/${userId}`)
+      axios.delete(`https://audio.globillmedicalresources.com/public/api/user/${userId}`)
         .then(response => {
          FetchAllusers()
-          console.log('User deleted successfully!');
+         toast.success('User deleted successfully!')
+          
         })
         .catch(error => {
           console.error('Error deleting user:', error);
@@ -41,10 +44,10 @@ const ShowAllUser = () => {
   
     const fetchSingleUser = (userId) => {
       console.log(userId)
-      axios.get(`http://127.0.0.1:8000/api/user/${userId}`)
+      axios.get(`https://audio.globillmedicalresources.com/public/api/user/${userId}`)
         .then(response => {
           setSingleUser(response.data);
-          console.log('Single user fetched successfully:', response.data);
+        
         })
         .catch(error => {
           console.error('Error fetching single user:', error);
@@ -78,18 +81,18 @@ const ShowAllUser = () => {
           <thead>
             <tr>
               <th
-                class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-400">
+                class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-800 uppercase border-b border-gray-200 bg-gray-400">
                 ID</th>
               <th
-                class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-400">
+                class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-800 uppercase border-b border-gray-200 bg-gray-400">
                 Name</th>
               <th
-                class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-400">
+                class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-800 uppercase border-b border-gray-200 bg-gray-400">
                 Email</th>
               <th
-                class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-400">
+                class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-800 uppercase border-b border-gray-200 bg-gray-400">
                 Role</th>
-              <th class="px-6 py-3 text-sm text-left text-gray-500 border-b border-gray-200 bg-gray-400" colspan="3">
+              <th class="px-6 py-3 text-sm text-left text-gray-800 border-b border-gray-200 bg-gray-400" colspan="3">
                 Action</th>
             </tr>
           </thead>

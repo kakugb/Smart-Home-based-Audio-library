@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   Card,
   Input,
@@ -26,9 +28,15 @@ export function AddUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/add/user', formData);
-      console.log('User added successfully:', response.data);
-      navigate('/dashboard/home')
+      const response = await axios.post('https://audio.globillmedicalresources.com/public/api/add/user', formData);
+      toast("User Add Successfully !");
+       setTimeout(()=>{
+       
+        navigate('/dashboard/UserManagement')
+       },3000)
+
+    
+      
     } catch (error) {
       console.error('Error adding user:', error);
      
@@ -94,6 +102,7 @@ export function AddUser() {
 
         </form>
       </Card>
+      <ToastContainer />
     </div>
   );
 }

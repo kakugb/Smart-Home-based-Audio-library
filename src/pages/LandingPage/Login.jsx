@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import {  Button} from "@material-tailwind/react"
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -20,34 +21,54 @@ export const Login = () => {
   };
 
   const loginMutation = async (credentials) => {
-    const response = await axios.post('http://127.0.0.1:8000/api/login', credentials);
-    console.log(credentials)
+
+    const response = await axios.post('https://audio.globillmedicalresources.com/public/api/login', credentials);
+    
     sessionStorage.setItem("token",response.data.message)
     return response.data;
     
   };
 
+  
   const mutation = useMutation(loginMutation, {
     onSuccess: (data) => {
       console.log('Login successful:', data);
       navigate('/dashboard/home');
+      localStorage.setItem("justLoggedIn", true);
     },
     onError: (error) => {
       console.error('Error logging in:', error);
+      toast.error("Please enter Correct credential !");
       
     },
   });
 
+  
   const handleSubmit = (e) => {
     e.preventDefault();
+  
+   
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter valid Email !");
+      return;
+    }
+  
+    
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long !");
+      return;
+    }
+  
     mutation.mutate({ email, password });
   };
+  
 
   return (
     <Popup trigger={
-      <Button variant="text" size="sm" className="hidden lg:inline-block">
-        <span className='text-[15px]'>Log In</span>
-      </Button>
+      <Button fullWidth variant="gradient" size="sm" className="">
+      <span>Login</span>
+    </Button>
     } modal nested>
       {close => (
         <>
@@ -64,7 +85,7 @@ export const Login = () => {
                   <p class="block mb-2 font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
                     Your Email
                   </p>
-                  <div class="relative h-10 w-full min-w-[200px]">
+                  <div class="relative h-10 w-full min-w-[100px]">
                     <input type="email" placeholder="name@mail.com"
                       value={email}
                       onChange={handleEmailChange}
@@ -77,7 +98,7 @@ export const Login = () => {
                   <p class="block mb-2 font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
                     Password
                   </p>
-                  <div class="relative h-10 w-full min-w-[200px]">
+                  <div class="relative h-10 w-full min-w-[100px]">
                     <input placeholder="********************"
                       value={password}
                       onChange={handlePasswordChange}
@@ -97,6 +118,7 @@ export const Login = () => {
               </form>
             </div>
           </div>
+          <ToastContainer />
         </>
       )}
     </Popup>
