@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import signlog from '../../assests/signlog.jpeg'
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import Popup from 'reactjs-popup';
@@ -75,7 +76,7 @@ export const Login = () => {
           <div class="flex-col rounded-xl bg-white ">
             <div class="relative grid px-1 py-1 m-0 overflow-hidden text-center text-white bg-gray-900 place-items-center rounded-xl bg-clip-border shadow-gray-900/20">
               <div class="w-full h-36 text-white">
-                <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy2Tmld5hp2im30-8G_Roaj5BHrsSBIGyQjA&usqp=CAU' alt='login image' className='w-full h-auto' />
+                <img src={signlog} alt='login image' className='w-full h-auto' />
               </div>
               <button onClick={() => close()} className='absolute top-2 right-2 text-2xl font-bold'>X</button>
             </div>

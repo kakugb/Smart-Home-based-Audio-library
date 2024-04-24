@@ -3,7 +3,7 @@ import React, { useState,useEffect } from 'react'
 import headphone from '../../assests/headphone.jpeg'
 import {Navbar,Collapse,Typography,Button,IconButton} from "@material-tailwind/react"
 import { Link } from 'react-router-dom';
-
+import hero from '../../assests/hero.jpeg'
 import 'reactjs-popup/dist/index.css';
 import { Signup } from './Signup';
 import { Login } from './Login';
@@ -80,7 +80,7 @@ function Navbars() {
       <div className="w-full">
       <img
       className="h-[450px] w-full rounded"
-      src="https://wallpaperset.com/w/full/c/1/2/466994.jpg"
+      src={hero}
       alt="Hero Section "
     />
       

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Search } from './UserTabel/Search';
-
+import billi from "../../assests/bili.jpeg"
 export function AudioLibrary() {
   const [audios, setAudios] = useState([]);
   const [displayedAudios, setDisplayedAudios] = useState([]);
@@ -85,7 +85,7 @@ export function AudioLibrary() {
               {displayedAudios.map(audio => (
                 <div key={audio.id} className="bg-gray-900 shadow-lg rounded-3xl p-3">
                   <div className="group relative mx-auto">
-                    <img className="w-full md:w-72 max-h-52 block rounded mx-auto" src={`https://audio.globillmedicalresources.com/public/images/${audio.image}`} alt={audio.name} />
+                  <img className="w-full md:w-72 max-h-52 block rounded mx-auto" src={billi} alt={audio.name} />
                     <div className="absolute bg-black rounded bg-opacity-0 group-hover:bg-opacity-60 w-full h-full top-0 flex items-center group-hover:opacity-100 transition justify-evenly">
                       {selectedAudio === audio && isPlaying ? (
                         <button className="hover:scale-110 text-white opacity-0 transform translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 transition" onClick={stopAudio}>

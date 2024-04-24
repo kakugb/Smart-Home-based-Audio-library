@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import signlog from '../../assests/signlog.jpeg'
 import axios from 'axios';
 import { useMutation } from 'react-query';
 import {  Button} from "@material-tailwind/react"
@@ -45,12 +45,10 @@ export const Signup = () => {
         email,
         password,
       });
-      console.log('Registration successful:', response.data);
+      
       toast.success("Registration successful !");
-      setTimeout(() => {
-        navigate("/")
-      }, 2000);
-      close();
+     
+     
     } catch (error) {
       console.error('Error registering:', error);
     }
@@ -72,7 +70,7 @@ export const Signup = () => {
         <div className="flex-col rounded-xl bg-white">
           <div className="relative grid px-1 py-1 m-0 overflow-hidden text-center text-white bg-gray-900 place-items-center rounded-xl bg-clip-border shadow-gray-900/20">
             <div className="w-full h-36 text-white">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy2Tmld5hp2im30-8G_Roaj5BHrsSBIGyQjA&usqp=CAU" alt="login image" className="w-full h-auto" />
+              <img src={signlog} alt="login image" className="w-full h-auto" />
             </div>
             <button onClick={() => close()} className="absolute top-2 right-2 text-2xl font-bold">
               X
