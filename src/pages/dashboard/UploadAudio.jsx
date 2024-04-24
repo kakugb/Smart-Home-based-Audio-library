@@ -13,6 +13,8 @@ export function UploadAudio() {
     user_id: "", 
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -29,34 +31,42 @@ export function UploadAudio() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
     formDataToSend.append("description", formData.description);
     formDataToSend.append("audio_file", formData.audio_file);
-    formDataToSend.append("user_id", formData.user_id); 
+    formDataToSend.append("user_id", 1); 
     formDataToSend.append("image", formData.image); 
     
    
     try {
       const response = await axios.post(
-        "https://audio.globillmedicalresources.com/public/api/add/audio",
+        "https://audio.globillmedicalresources.com/public/api/audio-upload-path",
         formDataToSend,
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            // cors 
+            "Access-Control-Allow-Origin": "*",
           },
         }
         
       );
+
       toast.success("Audio Successfully uploaded !");
+
       setTimeout(()=>{
          navigate("/dashboard/AudioLibrary")
       },2000)
+      setLoading(false);
       console.log("Audio uploaded successfully:", response.data);
     } catch (error) {
+      setLoading(false);
       console.error("Error uploading audio:", error);
     
     }
+
   };
 
   return (
@@ -103,7 +113,7 @@ export function UploadAudio() {
             placeholder="Audio Upload"
           />
         </div>
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="user_id">
             User Id
           </label>
@@ -116,7 +126,7 @@ export function UploadAudio() {
             onChange={handleChange}
             placeholder="Enter User Id"
           />
-        </div>
+        </div> */}
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Select Upload Image
@@ -135,7 +145,7 @@ export function UploadAudio() {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            Upload
+            {loading ? "Uploading..." : "Upload"}
           </button>
         </div>
       </form>

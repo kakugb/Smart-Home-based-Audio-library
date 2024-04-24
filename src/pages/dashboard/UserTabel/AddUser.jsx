@@ -28,7 +28,7 @@ export function AddUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://audio.globillmedicalresources.com/public/api/add/user', formData);
+      const response = await axios.post('https://audio.globillmedicalresources.com/public/api/user-create-path', formData);
       toast("User Add Successfully !");
        setTimeout(()=>{
        
