@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ThreeCircles } from 'react-loader-spinner'
 const ShowAllUser = () => {
     const [users, setUsers] = useState([]);
     const [singleUser,setSingleUser]=useState('')
@@ -30,7 +31,7 @@ const ShowAllUser = () => {
     }
   
     const handleDeleteUser = (userId) => {
-      axios.delete(`https://audio.globillmedicalresources.com/public/api/user/${userId}`)
+      axios.delete(`http://127.0.0.1:8000/api/user/${userId}`)
         .then(response => {
          FetchAllusers()
          toast.success('User deleted successfully!')
@@ -44,7 +45,7 @@ const ShowAllUser = () => {
   
     const fetchSingleUser = (userId) => {
       console.log(userId)
-      axios.get(`https://audio.globillmedicalresources.com/public/api/user/${userId}`)
+      axios.get(`http://127.0.0.1:8000/api/user/${userId}`)
         .then(response => {
           setSingleUser(response.data);
         
@@ -60,7 +61,17 @@ const ShowAllUser = () => {
       return 'Unknown';
     };
   
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <div>
+     <ThreeCircles
+  visible={true}
+  height="100"
+  width="100"
+  color="#4fa94d"
+  ariaLabel="three-circles-loading"
+  wrapperStyle={{}}
+  wrapperClass=""
+  />
+    </div>;
     if (error) return <div>Error fetching data: {error.message}</div>;
   return (
     <div class="container max-w-7xl mx-auto mt-8 ">

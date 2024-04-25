@@ -42,7 +42,7 @@ export function UploadAudio() {
    
     try {
       const response = await axios.post(
-        "https://audio.globillmedicalresources.com/public/api/audio-upload-path",
+        "http://127.0.0.1:8000/api/audio-upload-path",
         formDataToSend,
         {
           headers: {

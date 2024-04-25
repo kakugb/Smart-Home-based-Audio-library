@@ -13,7 +13,7 @@ export const UpdateUser = () => {
         const fetchUserData = async () => {
             try {
                 
-                const response = await axios.get(`https://audio.globillmedicalresources.com/public/api/user/${id}`);
+                const response = await axios.get(`http://127.0.0.1:8000/api/user/${id}`);
                 
                 if (response.status === 200) {
                     const data = response.data.edit;
@@ -40,7 +40,7 @@ export const UpdateUser = () => {
 
     const handleUpdate = async () => {
         try {
-            const response = await axios.put(`https://audio.globillmedicalresources.com/public/api/user/${id}`, userData);
+            const response = await axios.put(`http://127.0.0.1:8000/api/user/${id}`, userData);
             console.log(response)
             if (response.status === 200) {
                 

@@ -13,7 +13,7 @@ export default function MusicCategory() {
   useEffect(() => {
     async function fetchAudios() {
       try {
-        const response = await axios.get('https://audio.globillmedicalresources.com/public/api/all/audios');
+        const response = await axios.get('http://127.0.0.1:8000/api/all/audios');
         setAudios(response.data.audios);
         setDisplayedAudios(response?.data.audios); 
         setIsLoading(false); 
@@ -103,7 +103,7 @@ export default function MusicCategory() {
         </div>
       )}
       {selectedAudio && (
-        <audio ref={audioRef} src={`https://audio.globillmedicalresources.com/public/audio/${selectedAudio.audio_file}`} onEnded={stopAudio} autoPlay={isPlaying} />
+        <audio ref={audioRef} src={`http://127.0.0.1:8000/audio/${selectedAudio.audio_file}`} onEnded={stopAudio} autoPlay={isPlaying} />
       )}
     </main>
   );

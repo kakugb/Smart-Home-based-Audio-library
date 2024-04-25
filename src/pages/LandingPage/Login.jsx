@@ -23,7 +23,7 @@ export const Login = () => {
 
   const loginMutation = async (credentials) => {
 
-    const response = await axios.post('https://audio.globillmedicalresources.com/public/api/login', credentials);
+    const response = await axios.post('http://127.0.0.1:8000/api/login', credentials);
     
     sessionStorage.setItem("token",response.data.message)
     return response.data;

@@ -40,7 +40,7 @@ export const Signup = () => {
     }
 
     try {
-      const response = await axios.post('https://audio.globillmedicalresources.com/public/api/register', {
+      const response = await axios.post('http://127.0.0.1:8000/api/register', {
         name,
         email,
         password,
